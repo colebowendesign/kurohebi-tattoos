@@ -1,458 +1,274 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="noir" data-density="editorial">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KUROHEBI — Direction Study</title>
+<title>KUROHEBI — Ancient Ink. Future Skin.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@300;400;500&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet">
-
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-
-<style>
-  :root {
-    --canvas-bg: #1a1a1a;
-    --canvas-fg: #f5f1e8;
-    --canvas-fg-soft: #898782;
-    --canvas-accent: #E63946;
-    --canvas-rule: rgba(245,241,232,0.14);
-    --canvas-card-bg: #0f0f0f;
-  }
-  * { box-sizing: border-box; }
-  html, body, #root { margin: 0; padding: 0; height: 100%; background: var(--canvas-bg); color: var(--canvas-fg); font-family: "JetBrains Mono", monospace; }
-  body { overflow: hidden; }
-
-  .canvas-shell {
-    display: grid;
-    grid-template-rows: auto 1fr;
-    height: 100vh;
-    width: 100vw;
-  }
-
-  .canvas-bar {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    padding: 14px 22px;
-    border-bottom: 1px solid var(--canvas-rule);
-    background: var(--canvas-card-bg);
-    z-index: 10;
-  }
-  .cb-brand {
-    display: flex; align-items: center; gap: 10px;
-    font-family: "Shippori Mincho", serif;
-    font-weight: 700;
-    color: var(--canvas-fg);
-    letter-spacing: 0.04em;
-  }
-  .cb-brand-mark {
-    width: 26px; height: 26px;
-    background: var(--canvas-accent);
-    color: var(--canvas-fg);
-    display: inline-flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    font-size: 10px; line-height: 1; font-weight: 700;
-    padding: 4px 0;
-    font-family: "Shippori Mincho", serif;
-  }
-  .cb-brand-mark span { display: block; }
-  .cb-brand-text {
-    font-family: "Cormorant Garamond", serif;
-    font-weight: 500;
-    font-size: 16px;
-    letter-spacing: 0.32em;
-  }
-  .cb-divider { width: 1px; height: 24px; background: var(--canvas-rule); }
-  .cb-meta {
-    font-size: 10px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--canvas-fg-soft);
-  }
-  .cb-meta strong { color: var(--canvas-fg); font-weight: 500; }
-  .cb-spacer { flex: 1; }
-  .cb-controls { display: flex; gap: 12px; align-items: center; }
-  .cb-btn {
-    font-family: inherit;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    padding: 8px 14px;
-    background: transparent;
-    color: var(--canvas-fg);
-    border: 1px solid var(--canvas-rule);
-    cursor: pointer;
-    transition: all 0.16s;
-  }
-  .cb-btn:hover { border-color: var(--canvas-fg-soft); }
-  .cb-btn.active { background: var(--canvas-fg); color: var(--canvas-bg); border-color: var(--canvas-fg); }
-  .cb-btn.accent { border-color: var(--canvas-accent); color: var(--canvas-accent); }
-  .cb-btn.accent:hover { background: var(--canvas-accent); color: var(--canvas-fg); }
-
-  .stage {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 0;
-    height: 100%;
-    background: var(--canvas-bg);
-  }
-
-  .pane {
-    position: relative;
-    overflow: hidden;
-    border-right: 1px solid var(--canvas-rule);
-    display: flex; flex-direction: column;
-  }
-  .pane:last-child { border-right: 0; }
-
-  .pane-head {
-    position: absolute;
-    top: 14px; left: 14px;
-    z-index: 5;
-    display: flex; flex-direction: column; gap: 4px;
-    padding: 10px 14px;
-    background: rgba(15,15,15,0.92);
-    border: 1px solid var(--canvas-rule);
-    backdrop-filter: blur(8px);
-    pointer-events: auto;
-  }
-  .pane-head .ph-num {
-    font-size: 10px;
-    letter-spacing: 0.22em;
-    color: var(--canvas-accent);
-  }
-  .pane-head .ph-name {
-    font-family: "Cormorant Garamond", serif;
-    font-style: italic;
-    font-size: 19px;
-    color: var(--canvas-fg);
-    line-height: 1;
-  }
-  .pane-head .ph-sub {
-    font-size: 9px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--canvas-fg-soft);
-  }
-
-  .pane-tools {
-    position: absolute;
-    top: 14px; right: 14px;
-    z-index: 5;
-    display: flex; gap: 6px;
-  }
-  .pane-tool {
-    width: 30px; height: 30px;
-    background: rgba(15,15,15,0.92);
-    border: 1px solid var(--canvas-rule);
-    color: var(--canvas-fg);
-    font-size: 13px;
-    cursor: pointer;
-    display: inline-flex; align-items: center; justify-content: center;
-    backdrop-filter: blur(8px);
-  }
-  .pane-tool:hover { border-color: var(--canvas-accent); color: var(--canvas-accent); }
-
-  .pane-iframe-wrap {
-    flex: 1;
-    position: relative;
-    overflow: hidden;
-    background: var(--canvas-card-bg);
-  }
-  .pane-iframe {
-    border: 0;
-    background: transparent;
-    width: 100%;
-    height: 100%;
-  }
-
-  .legend {
-    position: absolute;
-    bottom: 14px; left: 14px;
-    z-index: 5;
-    padding: 8px 12px;
-    background: rgba(15,15,15,0.92);
-    border: 1px solid var(--canvas-rule);
-    font-size: 9px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--canvas-fg-soft);
-    display: flex; gap: 14px; align-items: center;
-  }
-  .legend-swatch { width: 10px; height: 10px; display: inline-block; vertical-align: middle; margin-right: 6px; }
-
-  .tweaks-panel {
-    position: fixed;
-    right: 22px;
-    bottom: 22px;
-    width: 280px;
-    background: var(--canvas-card-bg);
-    border: 1px solid var(--canvas-rule);
-    z-index: 100;
-    color: var(--canvas-fg);
-    font-family: inherit;
-    transition: transform 0.32s cubic-bezier(.2,.7,.2,1), opacity 0.32s;
-  }
-  .tweaks-panel.collapsed {
-    transform: translateY(calc(100% - 42px));
-  }
-  .tp-head {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 14px;
-    border-bottom: 1px solid var(--canvas-rule);
-    cursor: pointer;
-  }
-  .tp-title {
-    font-size: 10px;
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    color: var(--canvas-fg);
-  }
-  .tp-title em {
-    font-family: "Shippori Mincho", serif;
-    color: var(--canvas-accent);
-    font-style: normal;
-    margin-right: 6px;
-  }
-  .tp-toggle {
-    width: 18px; height: 18px;
-    border: 1px solid var(--canvas-rule);
-    color: var(--canvas-fg);
-    font-size: 10px;
-    line-height: 1;
-    display: inline-flex; align-items: center; justify-content: center;
-  }
-  .tp-body { padding: 16px 14px 18px; display: flex; flex-direction: column; gap: 18px; }
-  .tp-group { display: flex; flex-direction: column; gap: 8px; }
-  .tp-label {
-    font-size: 9px;
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    color: var(--canvas-fg-soft);
-  }
-  .tp-row { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
-  .tp-row.three { grid-template-columns: 1fr 1fr 1fr; }
-  .tp-pill {
-    font-family: inherit;
-    font-size: 9px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    padding: 8px 6px;
-    background: transparent;
-    color: var(--canvas-fg);
-    border: 1px solid var(--canvas-rule);
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.16s;
-  }
-  .tp-pill:hover { border-color: var(--canvas-fg-soft); }
-  .tp-pill.active { background: var(--canvas-accent); color: var(--canvas-fg); border-color: var(--canvas-accent); }
-  .tp-slider-row { display: flex; align-items: center; gap: 10px; }
-  .tp-slider { flex: 1; -webkit-appearance: none; height: 1px; background: var(--canvas-rule); outline: none; }
-  .tp-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 10px; height: 10px;
-    background: var(--canvas-accent);
-    border-radius: 0;
-    cursor: pointer;
-  }
-  .tp-slider::-moz-range-thumb {
-    width: 10px; height: 10px;
-    background: var(--canvas-accent);
-    border-radius: 0;
-    cursor: pointer;
-    border: 0;
-  }
-  .tp-num { font-size: 9px; color: var(--canvas-fg-soft); width: 28px; text-align: right; }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700;800&family=Shippori+Antique:wght@400&family=Klee+One:wght@400;600&family=Yuji+Mai&family=Noto+Serif+JP:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Cinzel:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&family=Space+Grotesk:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="prototype.css">
 </head>
 <body>
-<div id="root"></div>
 
-<script type="text/babel">
-const { useState, useEffect, useRef, useCallback } = React;
+<!-- Page loader -->
+<div id="site-loader" aria-hidden="true">
+  <div class="sl-wrap">
+    <div class="sl-kanji-pair">
+      <span class="sl-k1">黒</span>
+      <span class="sl-k2">蛇</span>
+    </div>
+    <div class="sl-divider"></div>
+    <p class="sl-brand">KUROHEBI</p>
+    <p class="sl-tagline">古の墨、未来の肌。</p>
+  </div>
+</div>
 
-// ---- TWEAK DEFAULTS persisted via host -------------------------------
-const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "typePair": "shippori-noto",
-  "grain": 0.09,
-  "density": "editorial"
-}/*EDITMODE-END*/;
+<!-- Grain overlay -->
+<div class="grain" aria-hidden="true"></div>
+<div class="scanlines" aria-hidden="true"></div>
 
-const PARENT_TOKEN = new URLSearchParams(location.search).get('t');
-const PROTO_URL = (theme, density, grain, typePair) => {
-  const p = new URLSearchParams({theme, density, grain: String(grain), typepair: typePair});
-  if (PARENT_TOKEN) p.set('t', PARENT_TOKEN);
-  return 'prototype.html?' + p.toString();
-};
+<!-- Custom cursor -->
+<div class="cursor-dot" aria-hidden="true"></div>
 
-// ---- Iframe pane ----------------------------------------------------
-function Pane({ side, theme, label, num, sub, focused, onFocus, density, grain, typePair }) {
-  const ref = useRef(null);
+<!-- Top nav -->
+<nav class="topnav">
+  <a href="#hero" class="brand">
+    <span class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 32 32" width="22" height="22"><rect x="2" y="2" width="28" height="28" fill="currentColor" rx="1"/><text x="16" y="13" text-anchor="middle" font-family="Shippori Mincho" font-weight="700" font-size="11" fill="var(--bg)">黒</text><text x="16" y="25" text-anchor="middle" font-family="Shippori Mincho" font-weight="700" font-size="11" fill="var(--bg)">蛇</text></svg>
+    </span>
+    <span class="brand-text">KUROHEBI</span>
+  </a>
+  <ul class="navlinks">
+    <li><a href="#philosophy"><span class="num">01</span> Philosophy</a></li>
+    <li><a href="#portfolio"><span class="num">02</span> Portfolio</a></li>
+    <li><a href="#process"><span class="num">03</span> Process</a></li>
+    <li><a href="#booking" class="cta">Book</a></li>
+  </ul>
+</nav>
 
-  // Send live tweaks to iframe on change
-  useEffect(() => {
-    if (!ref.current) return;
-    const send = () => {
-      try {
-        ref.current.contentWindow.postMessage({
-          type: 'kh:tweak',
-          theme, density, grain, typePair
-        }, '*');
-      } catch {}
-    };
-    send();
-    const f = ref.current;
-    f.addEventListener('load', send);
-    return () => f.removeEventListener('load', send);
-  }, [theme, density, grain, typePair]);
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-video-wrap">
+    <video class="hero-video" autoplay muted loop playsinline>
+      <source src="assets/hero.mp4" type="video/mp4">
+    </video>
+    <div class="hero-video-tint"></div>
+    <div class="hero-vignette"></div>
+  </div>
 
-  return (
-    <div className="pane">
-      <div className="pane-head">
-        <span className="ph-num">{num} &nbsp;·&nbsp; DIRECTION {side}</span>
-        <span className="ph-name">{label}</span>
-        <span className="ph-sub">{sub}</span>
+  <div class="hero-grid">
+    <div class="hero-meta hero-meta-tl">
+      <span class="rule rule-h"></span>
+      <span class="kicker">EST. <span class="num-jp">弐〇九九</span> &nbsp;·&nbsp; KYOTO / NEO-TOKYO</span>
+    </div>
+    <div class="hero-meta hero-meta-tr">
+      <span class="kicker">N 35°00'42" &nbsp;·&nbsp; E 135°46'06"</span>
+    </div>
+
+    <h1 class="hero-title">
+      <span class="ht-row">KURO</span>
+      <span class="ht-row">HEBI</span>
+    </h1>
+
+    <div class="hero-kanji" aria-hidden="true">
+      <span>黒</span>
+      <span>蛇</span>
+    </div>
+
+    <div class="hero-tagline">
+      <span class="rule rule-h short"></span>
+      <p class="tag-en"><em>Ancient Ink.</em> &nbsp;Future Skin.</p>
+      <p class="tag-jp">古の墨、未来の肌。</p>
+    </div>
+
+    <div class="hero-meta hero-meta-bl">
+      <span class="kicker"><span class="num">零壱</span> &nbsp;—&nbsp; A R&nbsp;C H I&nbsp;V E</span>
+    </div>
+
+    <div class="hero-meta hero-meta-br scroll-ind">
+      <span class="kicker">SCROLL</span>
+      <span class="scroll-line"></span>
+    </div>
+  </div>
+
+  <!-- Hanko seal floating, top-right corner of hero canvas -->
+  <div class="hanko hanko-hero" aria-hidden="true">
+    <span>黒</span><span>蛇</span>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<section class="philosophy" id="philosophy">
+  <div class="section-marker" data-fade="left">
+    <span class="num">壱</span>
+    <span class="kicker">0 1 &nbsp;—&nbsp; P H I L O S O P H Y</span>
+    <span class="rule rule-h grow"></span>
+  </div>
+
+  <div class="phi-grid">
+    <div class="phi-kanji" aria-hidden="true" data-fade="scale">道</div>
+
+    <div class="phi-body">
+      <h2 class="phi-h">
+        <em>Three hundred years</em> of needle and ink, rendered through the
+        <span class="phi-accent">vocabulary of a future that hasn't arrived</span>.
+      </h2>
+      <div class="phi-cols">
+        <p>
+          Kurohebi was founded on a simple, immovable conviction: that the
+          irezumi tradition — its dragons and serpents, its cherry-blossom
+          weather, its oni and koi — survives only when it is allowed to
+          breathe in new air. We do not flatten the past into nostalgia.
+          We do not gild the present into spectacle.
+        </p>
+        <p>
+          Every piece begins on rice paper, in the hand of a master. It ends
+          on skin, under instruments calibrated to the tenth of a millimetre.
+          What sits between is dialogue — between artist and wearer, between
+          a centuries-old grammar and a body that will carry it into the
+          century to come.
+        </p>
       </div>
-      <div className="pane-tools">
-        <button className="pane-tool" onClick={() => window.open(PROTO_URL(theme, density, grain, typePair), '_blank')} title="Open standalone">↗</button>
-      </div>
-      <div className="pane-iframe-wrap">
-        <iframe
-          ref={ref}
-          className="pane-iframe"
-          src={PROTO_URL(theme, density, grain, typePair)}
-          style={{ width: '100%', height: '100%' }}
-          title={`${label} preview`}
-        />
-      </div>
-      <div className="legend">
-        <span><span className="legend-swatch" style={{background: theme === 'museum' ? '#F5F1E8' : '#0A0A0A', border:'1px solid #898782'}}></span>{theme === 'museum' ? 'BONE' : 'INK'}</span>
-        <span><span className="legend-swatch" style={{background: theme === 'museum' ? '#0A0A0A' : '#F5F1E8'}}></span>{theme === 'museum' ? 'INK' : 'BONE'}</span>
-        <span><span className="legend-swatch" style={{background: theme === 'museum' ? '#C0392B' : '#E63946'}}></span>HANKO</span>
+      <div class="phi-meta">
+        <span class="kicker">道 &nbsp;·&nbsp; THE WAY</span>
+        <span class="kicker dim">— Mori Kentaro, Founding Artist, 2087</span>
       </div>
     </div>
-  );
-}
+  </div>
+</section>
 
-// ---- Tweaks panel ---------------------------------------------------
-function TweaksPanel({ tweaks, setTweak, available, onAvailable }) {
-  const [open, setOpen] = useState(true);
-  // Listen for host activation
-  useEffect(() => {
-    function onMsg(e) {
-      const d = e.data || {};
-      if (d.type === '__activate_edit_mode') { setOpen(true); }
-      if (d.type === '__deactivate_edit_mode') { setOpen(false); }
-    }
-    window.addEventListener('message', onMsg);
-    // Announce after listener is registered
-    onAvailable();
-    return () => window.removeEventListener('message', onMsg);
-  }, []);
+<!-- PORTFOLIO -->
+<section class="portfolio" id="portfolio">
+  <div class="section-marker" data-fade="left">
+    <span class="num">弐</span>
+    <span class="kicker">0 2 &nbsp;—&nbsp; P O R T F O L I O</span>
+    <span class="rule rule-h grow"></span>
+  </div>
 
-  const handleClose = () => {
-    setOpen(false);
-    try { window.parent.postMessage({type: '__edit_mode_dismissed'}, '*'); } catch {}
-  };
+  <div class="port-head">
+    <h2 class="port-h"><em>A small archive</em>, by hand, on skin.</h2>
+    <p class="port-sub">Selected works, 2089&nbsp;–&nbsp;2099. Click any piece to enlarge. Filtering is curatorial, not exhaustive.</p>
+  </div>
 
-  return (
-    <div className={'tweaks-panel' + (open ? '' : ' collapsed')}>
-      <div className="tp-head" onClick={() => open ? handleClose() : setOpen(true)}>
-        <span className="tp-title"><em>調整</em>TWEAKS</span>
-        <span className="tp-toggle">{open ? '×' : '+'}</span>
+  <div class="filter-bar" role="tablist" data-fade="left" data-delay="120">
+    <button class="chip active" data-filter="all">All <span class="chip-num">12</span></button>
+    <button class="chip" data-filter="dragon">Dragons <span class="chip-num">03</span></button>
+    <button class="chip" data-filter="koi">Koi <span class="chip-num">02</span></button>
+    <button class="chip" data-filter="floral">Floral <span class="chip-num">02</span></button>
+    <button class="chip" data-filter="yokai">Yokai <span class="chip-num">02</span></button>
+    <button class="chip" data-filter="wave">Wave Work <span class="chip-num">03</span></button>
+  </div>
+
+  <div class="masonry" id="masonry">
+    <!-- 12 cards, JS-injected for cleanliness -->
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="section-marker" data-fade="left">
+    <span class="num">参</span>
+    <span class="kicker">0 3 &nbsp;—&nbsp; T H E&nbsp; P R O C E S S</span>
+    <span class="rule rule-h grow"></span>
+  </div>
+
+  <div class="proc-head">
+    <h2 class="proc-h">
+      <em>Five movements</em> from
+      first conversation to <span class="proc-accent">healed skin</span>.
+    </h2>
+  </div>
+
+  <ol class="timeline">
+    <li class="step" data-fade>
+      <div class="step-marker"><span class="step-kanji">壱</span><span class="step-num">/01</span></div>
+      <div class="step-line" aria-hidden="true"></div>
+      <div class="step-body">
+        <h3>Consultation</h3>
+        <p class="step-meta">90 min &nbsp;·&nbsp; In studio &nbsp;·&nbsp; By appointment</p>
+        <p class="step-desc">A long conversation. We listen for what the piece is asking to be — the body it will live on, the life that body intends to lead. No pressure to commit; many conversations end without a needle.</p>
       </div>
-      <div className="tp-body" style={{display: open ? 'flex' : 'none'}}>
-
-        <div className="tp-group">
-          <span className="tp-label">Type Pairing</span>
-          <div className="tp-row three">
-            {[
-              {k: 'cormorant-grotesk', l: 'CORMORANT'},
-              {k: 'cinzel-inter',      l: 'CINZEL'},
-              {k: 'ebgaramond-mono',   l: 'GARAMOND'},
-            ].map(o => (
-              <button key={o.k}
-                className={'tp-pill' + (tweaks.typePair === o.k ? ' active' : '')}
-                onClick={() => setTweak('typePair', o.k)}>{o.l}</button>
-            ))}
-          </div>
-        </div>
-
-        <div className="tp-group">
-          <span className="tp-label">Layout Density</span>
-          <div className="tp-row">
-            {[
-              {k: 'editorial', l: 'EDITORIAL'},
-              {k: 'compact',   l: 'COMPACT'},
-            ].map(o => (
-              <button key={o.k}
-                className={'tp-pill' + (tweaks.density === o.k ? ' active' : '')}
-                onClick={() => setTweak('density', o.k)}>{o.l}</button>
-            ))}
-          </div>
-        </div>
-
+    </li>
+    <li class="step" data-fade>
+      <div class="step-marker"><span class="step-kanji">弐</span><span class="step-num">/02</span></div>
+      <div class="step-line" aria-hidden="true"></div>
+      <div class="step-body">
+        <h3>Design</h3>
+        <p class="step-meta">2&ndash;6 weeks &nbsp;·&nbsp; Sumi ink on washi paper</p>
+        <p class="step-desc">Drawn entirely by hand. We share progress in two reviews; revisions are encouraged early and welcomed late. The final design is yours regardless of whether you proceed.</p>
       </div>
+    </li>
+    <li class="step" data-fade>
+      <div class="step-marker"><span class="step-kanji">参</span><span class="step-num">/03</span></div>
+      <div class="step-line" aria-hidden="true"></div>
+      <div class="step-body">
+        <h3>Stencil &amp; Placement</h3>
+        <p class="step-meta">2 hr &nbsp;·&nbsp; Day-of, on body</p>
+        <p class="step-desc">The drawing meets the skin. We map flow with the muscle, the breath, the way the piece will move when you do. Nothing begins until placement is right.</p>
+      </div>
+    </li>
+    <li class="step" data-fade>
+      <div class="step-marker"><span class="step-kanji">肆</span><span class="step-num">/04</span></div>
+      <div class="step-line" aria-hidden="true"></div>
+      <div class="step-body">
+        <h3>Session</h3>
+        <p class="step-meta">4&ndash;8 hr per sitting &nbsp;·&nbsp; Single artist throughout</p>
+        <p class="step-desc">Full pieces are completed across multiple sittings, weeks apart. The same hand begins and ends each work. Tea between hours; quiet, when quiet is what's needed.</p>
+      </div>
+    </li>
+    <li class="step" data-fade>
+      <div class="step-marker"><span class="step-kanji">伍</span><span class="step-num">/05</span></div>
+      <div class="step-line" aria-hidden="true"></div>
+      <div class="step-body">
+        <h3>Aftercare</h3>
+        <p class="step-meta">14 days critical &nbsp;·&nbsp; Lifetime touch-ups</p>
+        <p class="step-desc">Detailed care kit and protocol provided. Every Kurohebi piece carries a lifetime warranty against fade and line-loss; touch-ups are by appointment, complimentary.</p>
+      </div>
+    </li>
+  </ol>
+</section>
+
+<!-- BOOKING / FOOTER STRIP -->
+<section class="booking" id="booking">
+  <div class="book-grid">
+    <div class="book-left">
+      <span class="kicker">B Y &nbsp; A P P O I N T M E N T &nbsp; O N L Y</span>
+      <h2 class="book-h"><em>Begin</em> a conversation.</h2>
+      <p class="book-sub">Most pieces are booked 4–9 months in advance. We open the calendar quarterly, on the new moon.</p>
+      <a href="#" class="book-cta">
+        <span>Submit an enquiry</span>
+        <span class="arrow">→</span>
+      </a>
     </div>
-  );
-}
-
-// ---- Root -----------------------------------------------------------
-function App() {
-  const [tweaks, setTweaks] = useState(TWEAK_DEFAULTS);
-
-  const setTweak = useCallback((key, val) => {
-    setTweaks(prev => {
-      const next = typeof key === 'object' ? {...prev, ...key} : {...prev, [key]: val};
-      try { window.parent.postMessage({type: '__edit_mode_set_keys', edits: next}, '*'); } catch {}
-      return next;
-    });
-  }, []);
-
-  const onAvailable = useCallback(() => {
-    try { window.parent.postMessage({type: '__edit_mode_available'}, '*'); } catch {}
-  }, []);
-
-  return (
-    <div className="canvas-shell">
-      <header className="canvas-bar">
-        <div className="cb-brand">
-          <span className="cb-brand-mark"><span>黒</span><span>蛇</span></span>
-          <span className="cb-brand-text">KUROHEBI</span>
-        </div>
-        <span className="cb-divider"></span>
-        <span className="cb-meta">CYBERPUNK NOIR <strong>v.001</strong> &nbsp;·&nbsp; 弐〇九九</span>
-        <span className="cb-spacer"></span>
-        <div className="cb-controls">
-          <button className="cb-btn" onClick={() => window.open(`prototype.html?theme=noir&density=${tweaks.density}&grain=${tweaks.grain}&typepair=${tweaks.typePair}`, '_blank')}>OPEN STANDALONE ↗</button>
-        </div>
-      </header>
-
-      <div className="stage">
-        <Pane
-          side="B"
-          theme="noir"
-          label="Cyberpunk Noir"
-          num="02"
-          sub="Matte black · neon hanko · scan"
-          focused={true}
-          onFocus={() => {}}
-          density={tweaks.density}
-          grain={tweaks.grain}
-          typePair={tweaks.typePair}
-        />
-      </div>
-
-      <TweaksPanel tweaks={tweaks} setTweak={setTweak} onAvailable={onAvailable} />
+    <div class="book-right">
+      <dl class="contact">
+        <div><dt>Studio</dt><dd>Kurohebi 黒蛇<br>Tower B, 14F<br>Higashiyama-ku, Kyoto</dd></div>
+        <div><dt>Hours</dt><dd>Tue – Sat<br>13:00 – 22:00 JST</dd></div>
+        <div><dt>Direct</dt><dd>ink@kurohebi.jp<br>+81 75 0000 0000</dd></div>
+        <div><dt>Channels</dt><dd>インスタ &nbsp; ／ &nbsp; ツイッター<br>テレグラム &nbsp; ／ &nbsp; ノート</dd></div>
+      </dl>
     </div>
-  );
-}
+  </div>
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-</script>
+  <div class="footer-row" data-fade>
+    <div class="hanko hanko-foot" aria-hidden="true"><span>黒</span><span>蛇</span></div>
+    <div class="foot-meta">
+      <span class="kicker">© <span class="num-jp">弐〇九九</span> &nbsp; KUROHEBI &nbsp;—&nbsp; ALL WORK BY HAND</span>
+      <span class="kicker dim">SITE / 草稿 003 — Built in Kyoto, after midnight.</span>
+    </div>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lb-close" id="lbClose" aria-label="Close">×</button>
+  <button class="lb-nav lb-prev" id="lbPrev" aria-label="Previous">‹</button>
+  <button class="lb-nav lb-next" id="lbNext" aria-label="Next">›</button>
+  <div class="lb-content" id="lbContent"></div>
+  <div class="lb-meta" id="lbMeta"></div>
+</div>
+
+<script src="prototype.js"></script>
 </body>
 </html>
