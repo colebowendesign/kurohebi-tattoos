@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KUROHEBI — Direction Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@300;400;500&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet">
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<style>
+  :root {
+    --canvas-bg: #1a1a1a;
+    --canvas-fg: #f5f1e8;
+    --canvas-fg-soft: #898782;
+    --canvas-accent: #E63946;
+    --canvas-rule: rgba(245,241,232,0.14);
+    --canvas-card-bg: #0f0f0f;
+  }
+  * { box-sizing: border-box; }
+  html, body, #root { margin: 0; padding: 0; height: 100%; background: var(--canvas-bg); color: var(--canvas-fg); font-family: "JetBrains Mono", monospace; }
+  body { overflow: hidden; }
+
+  .canvas-shell {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  .canvas-bar {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 14px 22px;
+    border-bottom: 1px solid var(--canvas-rule);
+    background: var(--canvas-card-bg);
+    z-index: 10;
+  }
+  .cb-brand {
+    display: flex; align-items: center; gap: 10px;
+    font-family: "Shippori Mincho", serif;
+    font-weight: 700;
+    color: var(--canvas-fg);
+    letter-spacing: 0.04em;
+  }
+  .cb-brand-mark {
+    width: 26px; height: 26px;
+    background: var(--canvas-accent);
+    color: var(--canvas-fg);
+    display: inline-flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    font-size: 10px; line-height: 1; font-weight: 700;
+    padding: 4px 0;
+    font-family: "Shippori Mincho", serif;
+  }
+  .cb-brand-mark span { display: block; }
+  .cb-brand-text {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: 0.32em;
+  }
+  .cb-divider { width: 1px; height: 24px; background: var(--canvas-rule); }
+  .cb-meta {
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--canvas-fg-soft);
+  }
+  .cb-meta strong { color: var(--canvas-fg); font-weight: 500; }
+  .cb-spacer { flex: 1; }
+  .cb-controls { display: flex; gap: 12px; align-items: center; }
+  .cb-btn {
+    font-family: inherit;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    background: transparent;
+    color: var(--canvas-fg);
+    border: 1px solid var(--canvas-rule);
+    cursor: pointer;
+    transition: all 0.16s;
+  }
+  .cb-btn:hover { border-color: var(--canvas-fg-soft); }
+  .cb-btn.active { background: var(--canvas-fg); color: var(--canvas-bg); border-color: var(--canvas-fg); }
+  .cb-btn.accent { border-color: var(--canvas-accent); color: var(--canvas-accent); }
+  .cb-btn.accent:hover { background: var(--canvas-accent); color: var(--canvas-fg); }
+
+  .stage {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    height: 100%;
+    background: var(--canvas-bg);
+  }
+
+  .pane {
+    position: relative;
+    overflow: hidden;
+    border-right: 1px solid var(--canvas-rule);
+    display: flex; flex-direction: column;
+  }
+  .pane:last-child { border-right: 0; }
+
+  .pane-head {
+    position: absolute;
+    top: 14px; left: 14px;
+    z-index: 5;
+    display: flex; flex-direction: column; gap: 4px;
+    padding: 10px 14px;
+    background: rgba(15,15,15,0.92);
+    border: 1px solid var(--canvas-rule);
+    backdrop-filter: blur(8px);
+    pointer-events: auto;
+  }
+  .pane-head .ph-num {
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    color: var(--canvas-accent);
+  }
+  .pane-head .ph-name {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 19px;
+    color: var(--canvas-fg);
+    line-height: 1;
+  }
+  .pane-head .ph-sub {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--canvas-fg-soft);
+  }
+
+  .pane-tools {
+    position: absolute;
+    top: 14px; right: 14px;
+    z-index: 5;
+    display: flex; gap: 6px;
+  }
+  .pane-tool {
+    width: 30px; height: 30px;
+    background: rgba(15,15,15,0.92);
+    border: 1px solid var(--canvas-rule);
+    color: var(--canvas-fg);
+    font-size: 13px;
+    cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    backdrop-filter: blur(8px);
+  }
+  .pane-tool:hover { border-color: var(--canvas-accent); color: var(--canvas-accent); }
+
+  .pane-iframe-wrap {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background: var(--canvas-card-bg);
+  }
+  .pane-iframe {
+    border: 0;
+    background: transparent;
+    width: 100%;
+    height: 100%;
+  }
+
+  .legend {
+    position: absolute;
+    bottom: 14px; left: 14px;
+    z-index: 5;
+    padding: 8px 12px;
+    background: rgba(15,15,15,0.92);
+    border: 1px solid var(--canvas-rule);
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--canvas-fg-soft);
+    display: flex; gap: 14px; align-items: center;
+  }
+  .legend-swatch { width: 10px; height: 10px; display: inline-block; vertical-align: middle; margin-right: 6px; }
+
+  .tweaks-panel {
+    position: fixed;
+    right: 22px;
+    bottom: 22px;
+    width: 280px;
+    background: var(--canvas-card-bg);
+    border: 1px solid var(--canvas-rule);
+    z-index: 100;
+    color: var(--canvas-fg);
+    font-family: inherit;
+    transition: transform 0.32s cubic-bezier(.2,.7,.2,1), opacity 0.32s;
+  }
+  .tweaks-panel.collapsed {
+    transform: translateY(calc(100% - 42px));
+  }
+  .tp-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--canvas-rule);
+    cursor: pointer;
+  }
+  .tp-title {
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--canvas-fg);
+  }
+  .tp-title em {
+    font-family: "Shippori Mincho", serif;
+    color: var(--canvas-accent);
+    font-style: normal;
+    margin-right: 6px;
+  }
+  .tp-toggle {
+    width: 18px; height: 18px;
+    border: 1px solid var(--canvas-rule);
+    color: var(--canvas-fg);
+    font-size: 10px;
+    line-height: 1;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .tp-body { padding: 16px 14px 18px; display: flex; flex-direction: column; gap: 18px; }
+  .tp-group { display: flex; flex-direction: column; gap: 8px; }
+  .tp-label {
+    font-size: 9px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--canvas-fg-soft);
+  }
+  .tp-row { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+  .tp-row.three { grid-template-columns: 1fr 1fr 1fr; }
+  .tp-pill {
+    font-family: inherit;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 8px 6px;
+    background: transparent;
+    color: var(--canvas-fg);
+    border: 1px solid var(--canvas-rule);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.16s;
+  }
+  .tp-pill:hover { border-color: var(--canvas-fg-soft); }
+  .tp-pill.active { background: var(--canvas-accent); color: var(--canvas-fg); border-color: var(--canvas-accent); }
+  .tp-slider-row { display: flex; align-items: center; gap: 10px; }
+  .tp-slider { flex: 1; -webkit-appearance: none; height: 1px; background: var(--canvas-rule); outline: none; }
+  .tp-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 10px; height: 10px;
+    background: var(--canvas-accent);
+    border-radius: 0;
+    cursor: pointer;
+  }
+  .tp-slider::-moz-range-thumb {
+    width: 10px; height: 10px;
+    background: var(--canvas-accent);
+    border-radius: 0;
+    cursor: pointer;
+    border: 0;
+  }
+  .tp-num { font-size: 9px; color: var(--canvas-fg-soft); width: 28px; text-align: right; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
+
+// ---- TWEAK DEFAULTS persisted via host -------------------------------
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "typePair": "shippori-noto",
+  "grain": 0.09,
+  "density": "editorial"
+}/*EDITMODE-END*/;
+
+const PARENT_TOKEN = new URLSearchParams(location.search).get('t');
+const PROTO_URL = (theme, density, grain, typePair) => {
+  const p = new URLSearchParams({theme, density, grain: String(grain), typepair: typePair});
+  if (PARENT_TOKEN) p.set('t', PARENT_TOKEN);
+  return 'prototype.html?' + p.toString();
+};
+
+// ---- Iframe pane ----------------------------------------------------
+function Pane({ side, theme, label, num, sub, focused, onFocus, density, grain, typePair }) {
+  const ref = useRef(null);
+
+  // Send live tweaks to iframe on change
+  useEffect(() => {
+    if (!ref.current) return;
+    const send = () => {
+      try {
+        ref.current.contentWindow.postMessage({
+          type: 'kh:tweak',
+          theme, density, grain, typePair
+        }, '*');
+      } catch {}
+    };
+    send();
+    const f = ref.current;
+    f.addEventListener('load', send);
+    return () => f.removeEventListener('load', send);
+  }, [theme, density, grain, typePair]);
+
+  return (
+    <div className="pane">
+      <div className="pane-head">
+        <span className="ph-num">{num} &nbsp;·&nbsp; DIRECTION {side}</span>
+        <span className="ph-name">{label}</span>
+        <span className="ph-sub">{sub}</span>
+      </div>
+      <div className="pane-tools">
+        <button className="pane-tool" onClick={() => window.open(PROTO_URL(theme, density, grain, typePair), '_blank')} title="Open standalone">↗</button>
+      </div>
+      <div className="pane-iframe-wrap">
+        <iframe
+          ref={ref}
+          className="pane-iframe"
+          src={PROTO_URL(theme, density, grain, typePair)}
+          style={{ width: '100%', height: '100%' }}
+          title={`${label} preview`}
+        />
+      </div>
+      <div className="legend">
+        <span><span className="legend-swatch" style={{background: theme === 'museum' ? '#F5F1E8' : '#0A0A0A', border:'1px solid #898782'}}></span>{theme === 'museum' ? 'BONE' : 'INK'}</span>
+        <span><span className="legend-swatch" style={{background: theme === 'museum' ? '#0A0A0A' : '#F5F1E8'}}></span>{theme === 'museum' ? 'INK' : 'BONE'}</span>
+        <span><span className="legend-swatch" style={{background: theme === 'museum' ? '#C0392B' : '#E63946'}}></span>HANKO</span>
+      </div>
+    </div>
+  );
+}
+
+// ---- Tweaks panel ---------------------------------------------------
+function TweaksPanel({ tweaks, setTweak, available, onAvailable }) {
+  const [open, setOpen] = useState(true);
+  // Listen for host activation
+  useEffect(() => {
+    function onMsg(e) {
+      const d = e.data || {};
+      if (d.type === '__activate_edit_mode') { setOpen(true); }
+      if (d.type === '__deactivate_edit_mode') { setOpen(false); }
+    }
+    window.addEventListener('message', onMsg);
+    // Announce after listener is registered
+    onAvailable();
+    return () => window.removeEventListener('message', onMsg);
+  }, []);
+
+  const handleClose = () => {
+    setOpen(false);
+    try { window.parent.postMessage({type: '__edit_mode_dismissed'}, '*'); } catch {}
+  };
+
+  return (
+    <div className={'tweaks-panel' + (open ? '' : ' collapsed')}>
+      <div className="tp-head" onClick={() => open ? handleClose() : setOpen(true)}>
+        <span className="tp-title"><em>調整</em>TWEAKS</span>
+        <span className="tp-toggle">{open ? '×' : '+'}</span>
+      </div>
+      <div className="tp-body" style={{display: open ? 'flex' : 'none'}}>
+
+        <div className="tp-group">
+          <span className="tp-label">Type Pairing</span>
+          <div className="tp-row three">
+            {[
+              {k: 'cormorant-grotesk', l: 'CORMORANT'},
+              {k: 'cinzel-inter',      l: 'CINZEL'},
+              {k: 'ebgaramond-mono',   l: 'GARAMOND'},
+            ].map(o => (
+              <button key={o.k}
+                className={'tp-pill' + (tweaks.typePair === o.k ? ' active' : '')}
+                onClick={() => setTweak('typePair', o.k)}>{o.l}</button>
+            ))}
+          </div>
+        </div>
+
+        <div className="tp-group">
+          <span className="tp-label">Layout Density</span>
+          <div className="tp-row">
+            {[
+              {k: 'editorial', l: 'EDITORIAL'},
+              {k: 'compact',   l: 'COMPACT'},
+            ].map(o => (
+              <button key={o.k}
+                className={'tp-pill' + (tweaks.density === o.k ? ' active' : '')}
+                onClick={() => setTweak('density', o.k)}>{o.l}</button>
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+// ---- Root -----------------------------------------------------------
+function App() {
+  const [tweaks, setTweaks] = useState(TWEAK_DEFAULTS);
+
+  const setTweak = useCallback((key, val) => {
+    setTweaks(prev => {
+      const next = typeof key === 'object' ? {...prev, ...key} : {...prev, [key]: val};
+      try { window.parent.postMessage({type: '__edit_mode_set_keys', edits: next}, '*'); } catch {}
+      return next;
+    });
+  }, []);
+
+  const onAvailable = useCallback(() => {
+    try { window.parent.postMessage({type: '__edit_mode_available'}, '*'); } catch {}
+  }, []);
+
+  return (
+    <div className="canvas-shell">
+      <header className="canvas-bar">
+        <div className="cb-brand">
+          <span className="cb-brand-mark"><span>黒</span><span>蛇</span></span>
+          <span className="cb-brand-text">KUROHEBI</span>
+        </div>
+        <span className="cb-divider"></span>
+        <span className="cb-meta">CYBERPUNK NOIR <strong>v.001</strong> &nbsp;·&nbsp; 弐〇九九</span>
+        <span className="cb-spacer"></span>
+        <div className="cb-controls">
+          <button className="cb-btn" onClick={() => window.open(`prototype.html?theme=noir&density=${tweaks.density}&grain=${tweaks.grain}&typepair=${tweaks.typePair}`, '_blank')}>OPEN STANDALONE ↗</button>
+        </div>
+      </header>
+
+      <div className="stage">
+        <Pane
+          side="B"
+          theme="noir"
+          label="Cyberpunk Noir"
+          num="02"
+          sub="Matte black · neon hanko · scan"
+          focused={true}
+          onFocus={() => {}}
+          density={tweaks.density}
+          grain={tweaks.grain}
+          typePair={tweaks.typePair}
+        />
+      </div>
+
+      <TweaksPanel tweaks={tweaks} setTweak={setTweak} onAvailable={onAvailable} />
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

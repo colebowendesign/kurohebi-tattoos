@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="noir" data-density="editorial">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KUROHEBI — Ancient Ink. Future Skin.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700;800&family=Shippori+Antique:wght@400&family=Klee+One:wght@400;600&family=Yuji+Mai&family=Noto+Serif+JP:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Cinzel:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&family=Space+Grotesk:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="prototype.css">
+</head>
+<body>
+
+<!-- Page loader -->
+<div id="site-loader" aria-hidden="true">
+  <div class="sl-wrap">
+    <div class="sl-kanji-pair">
+      <span class="sl-k1">黒</span>
+      <span class="sl-k2">蛇</span>
+    </div>
+    <div class="sl-divider"></div>
+    <p class="sl-brand">KUROHEBI</p>
+    <p class="sl-tagline">古の墨、未来の肌。</p>
+  </div>
+</div>
+
+<!-- Grain overlay -->
+<div class="grain" aria-hidden="true"></div>
+<div class="scanlines" aria-hidden="true"></div>
+
+<!-- Custom cursor -->
+<div class="cursor-dot" aria-hidden="true"></div>
+
+<!-- Top nav -->
+<nav class="topnav">
+  <a href="#hero" class="brand">
+    <span class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 32 32" width="22" height="22"><rect x="2" y="2" width="28" height="28" fill="currentColor" rx="1"/><text x="16" y="13" text-anchor="middle" font-family="Shippori Mincho" font-weight="700" font-size="11" fill="var(--bg)">黒</text><text x="16" y="25" text-anchor="middle" font-family="Shippori Mincho" font-weight="700" font-size="11" fill="var(--bg)">蛇</text></svg>
+    </span>
+    <span class="brand-text">KUROHEBI</span>
+  </a>
+  <ul class="navlinks">
+    <li><a href="#philosophy"><span class="num">01</span> Philosophy</a></li>
+    <li><a href="#portfolio"><span class="num">02</span> Portfolio</a></li>
+    <li><a href="#process"><span class="num">03</span> Process</a></li>
+    <li><a href="#booking" class="cta">Book</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-video-wrap">
+    <video class="hero-video" autoplay muted loop playsinline>
+      <source src="assets/hero.mp4" type="video/mp4">
+    </video>
+    <div class="hero-video-tint"></div>
+    <div class="hero-vignette"></div>
+  </div>
+
+  <div class="hero-grid">
+    <div class="hero-meta hero-meta-tl">
+      <span class="rule rule-h"></span>
+      <span class="kicker">EST. <span class="num-jp">弐〇九九</span> &nbsp;·&nbsp; KYOTO / NEO-TOKYO</span>
+    </div>
+    <div class="hero-meta hero-meta-tr">
+      <span class="kicker">N 35°00'42" &nbsp;·&nbsp; E 135°46'06"</span>
+    </div>
+
+    <h1 class="hero-title">
+      <span class="ht-row">KURO</span>
+      <span class="ht-row">HEBI</span>
+    </h1>
+
+    <div class="hero-kanji" aria-hidden="true">
+      <span>黒</span>
+      <span>蛇</span>
+    </div>
+
+    <div class="hero-tagline">
+      <span class="rule rule-h short"></span>
+      <p class="tag-en"><em>Ancient Ink.</em> &nbsp;Future Skin.</p>
+      <p class="tag-jp">古の墨、未来の肌。</p>
+    </div>
+
+    <div class="hero-meta hero-meta-bl">
+      <span class="kicker"><span class="num">零壱</span> &nbsp;—&nbsp; A R&nbsp;C H I&nbsp;V E</span>
+    </div>
+
+    <div class="hero-meta hero-meta-br scroll-ind">
+      <span class="kicker">SCROLL</span>
+      <span class="scroll-line"></span>
+    </div>
+  </div>
+
+  <!-- Hanko seal floating, top-right corner of hero canvas -->
+  <div class="hanko hanko-hero" aria-hidden="true">
+    <span>黒</span><span>蛇</span>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<section class="philosophy" id="philosophy">
+  <div class="section-marker" data-fade="left">
+    <span class="num">壱</span>
+    <span class="kicker">0 1 &nbsp;—&nbsp; P H I L O S O P H Y</span>
+    <span class="rule rule-h grow"></span>
+  </div>
+
+  <div class="phi-grid">
+    <div class="phi-kanji" aria-hidden="true" data-fade="scale">道</div>
+
+    <div class="phi-body">
+      <h2 class="phi-h">
+        <em>Three hundred years</em> of needle and ink, rendered through the
+        <span class="phi-accent">vocabulary of a future that hasn't arrived</span>.
+      </h2>
+      <div class="phi-cols">
+        <p>
+          Kurohebi was founded on a simple, immovable conviction: that the
+          irezumi tradition — its dragons and serpents, its cherry-blossom
+          weather, its oni and koi — survives only when it is allowed to
+          breathe in new air. We do not flatten the past into nostalgia.
+          We do not gild the present into spectacle.
+        </p>
+        <p>
+          Every piece begins on rice paper, in the hand of a master. It ends
+          on skin, under instruments calibrated to the tenth of a millimetre.
+          What sits between is dialogue — between artist and wearer, between
+          a centuries-old grammar and a body that will carry it into the
+          century to come.
+        </p>
+      </div>
+      <div class="phi-meta">
+        <span class="kicker">道 &nbsp;·&nbsp; THE WAY</span>
+        <span class="kicker dim">— Mori Kentaro, Founding Artist, 2087</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section class="portfolio" id="portfolio">
+  <div class="section-marker" data-fade="left">
+    <span class="num">弐</span>
+    <span class="kicker">0 2 &nbsp;—&nbsp; P O R T F O L I O</span>
+    <span class="rule rule-h grow"></span>
+  </div>
+
+  <div class="port-head">
+    <h2 class="port-h"><em>A small archive</em>, by hand, on skin.</h2>
+    <p class="port-sub">Selected works, 2089&nbsp;–&nbsp;2099. Click any piece to enlarge. Filtering is curatorial, not exhaustive.</p>
+  </div>
+
+  <div class="filter-bar" role="tablist" data-fade="left" data-delay="120">
+    <button class="chip active" data-filter="all">All <span class="chip-num">12</span></button>
+    <button class="chip" data-filter="dragon">Dragons <span class="chip-num">03</span></button>
+    <button class="chip" data-filter="koi">Koi <span class="chip-num">02</span></button>
+    <button class="chip" data-filter="floral">Floral <span class="chip-num">02</span></button>
+    <button class="chip" data-filter="yokai">Yokai <span class="chip-num">02</span></button>
+    <button class="chip" data-filter="wave">Wave Work <span class="chip-num">03</span></button>
+  </div>
+
+  <div class="masonry" id="masonry">
+    <!-- 12 cards, JS-injected for cleanliness -->
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="section-marker" data-fade="left">
+    <span class="num">参</span>
+    <span class="kicker">0 3 &nbsp;—&nbsp; T H E&nbsp; P R O C E S S</span>
+    <span class="rule rule-h grow"></span>
+  </div>
+
+  <div class="proc-head">
+    <h2 class="proc-h">
+      <em>Five movements</em> from
+      first conversation to <span class="proc-accent">healed skin</span>.
+    </h2>
+  </div>
+
+  <ol class="timeline">
+    <li class="step" data-fade>
+      <div class="step-marker"><span class="step-kanji">壱</span><span class="step-num">/01</span></div>
+      <div class="step-line" aria-hidden="true"></div>
+      <div class="step-body">
+        <h3>Consultation</h3>
+        <p class="step-meta">90 min &nbsp;·&nbsp; In studio &nbsp;·&nbsp; By appointment</p>
+        <p class="step-desc">A long conversation. We listen for what the piece is asking to be — the body it will live on, the life that body intends to lead. No pressure to commit; many conversations end without a needle.</p>
+      </div>
+    </li>
+    <li class="step" data-fade>
+      <div class="step-marker"><span class="step-kanji">弐</span><span class="step-num">/02</span></div>
+      <div class="step-line" aria-hidden="true"></div>
+      <div class="step-body">
+        <h3>Design</h3>
+        <p class="step-meta">2&ndash;6 weeks &nbsp;·&nbsp; Sumi ink on washi paper</p>
+        <p class="step-desc">Drawn entirely by hand. We share progress in two reviews; revisions are encouraged early and welcomed late. The final design is yours regardless of whether you proceed.</p>
+      </div>
+    </li>
+    <li class="step" data-fade>
+      <div class="step-marker"><span class="step-kanji">参</span><span class="step-num">/03</span></div>
+      <div class="step-line" aria-hidden="true"></div>
+      <div class="step-body">
+        <h3>Stencil &amp; Placement</h3>
+        <p class="step-meta">2 hr &nbsp;·&nbsp; Day-of, on body</p>
+        <p class="step-desc">The drawing meets the skin. We map flow with the muscle, the breath, the way the piece will move when you do. Nothing begins until placement is right.</p>
+      </div>
+    </li>
+    <li class="step" data-fade>
+      <div class="step-marker"><span class="step-kanji">肆</span><span class="step-num">/04</span></div>
+      <div class="step-line" aria-hidden="true"></div>
+      <div class="step-body">
+        <h3>Session</h3>
+        <p class="step-meta">4&ndash;8 hr per sitting &nbsp;·&nbsp; Single artist throughout</p>
+        <p class="step-desc">Full pieces are completed across multiple sittings, weeks apart. The same hand begins and ends each work. Tea between hours; quiet, when quiet is what's needed.</p>
+      </div>
+    </li>
+    <li class="step" data-fade>
+      <div class="step-marker"><span class="step-kanji">伍</span><span class="step-num">/05</span></div>
+      <div class="step-line" aria-hidden="true"></div>
+      <div class="step-body">
+        <h3>Aftercare</h3>
+        <p class="step-meta">14 days critical &nbsp;·&nbsp; Lifetime touch-ups</p>
+        <p class="step-desc">Detailed care kit and protocol provided. Every Kurohebi piece carries a lifetime warranty against fade and line-loss; touch-ups are by appointment, complimentary.</p>
+      </div>
+    </li>
+  </ol>
+</section>
+
+<!-- BOOKING / FOOTER STRIP -->
+<section class="booking" id="booking">
+  <div class="book-grid">
+    <div class="book-left">
+      <span class="kicker">B Y &nbsp; A P P O I N T M E N T &nbsp; O N L Y</span>
+      <h2 class="book-h"><em>Begin</em> a conversation.</h2>
+      <p class="book-sub">Most pieces are booked 4–9 months in advance. We open the calendar quarterly, on the new moon.</p>
+      <a href="#" class="book-cta">
+        <span>Submit an enquiry</span>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+    <div class="book-right">
+      <dl class="contact">
+        <div><dt>Studio</dt><dd>Kurohebi 黒蛇<br>Tower B, 14F<br>Higashiyama-ku, Kyoto</dd></div>
+        <div><dt>Hours</dt><dd>Tue – Sat<br>13:00 – 22:00 JST</dd></div>
+        <div><dt>Direct</dt><dd>ink@kurohebi.jp<br>+81 75 0000 0000</dd></div>
+        <div><dt>Channels</dt><dd>インスタ &nbsp; ／ &nbsp; ツイッター<br>テレグラム &nbsp; ／ &nbsp; ノート</dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="footer-row" data-fade>
+    <div class="hanko hanko-foot" aria-hidden="true"><span>黒</span><span>蛇</span></div>
+    <div class="foot-meta">
+      <span class="kicker">© <span class="num-jp">弐〇九九</span> &nbsp; KUROHEBI &nbsp;—&nbsp; ALL WORK BY HAND</span>
+      <span class="kicker dim">SITE / 草稿 003 — Built in Kyoto, after midnight.</span>
+    </div>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lb-close" id="lbClose" aria-label="Close">×</button>
+  <button class="lb-nav lb-prev" id="lbPrev" aria-label="Previous">‹</button>
+  <button class="lb-nav lb-next" id="lbNext" aria-label="Next">›</button>
+  <div class="lb-content" id="lbContent"></div>
+  <div class="lb-meta" id="lbMeta"></div>
+</div>
+
+<script src="prototype.js"></script>
+</body>
+</html>
