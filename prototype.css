@@ -1063,3 +1063,168 @@ html[data-theme="noir"] .hero-vignette {
   pointer-events: none;
 }
 #site-loader.sl-gone { display: none; }
+
+/* ============================================================
+   MOBILE — Comprehensive optimizations
+   ============================================================ */
+
+/* ----- Hamburger toggle button ----- */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  padding: 11px;
+  position: relative;
+  z-index: 201;
+  flex-shrink: 0;
+}
+.nav-toggle span {
+  display: block;
+  width: 22px;
+  height: 1.5px;
+  background: var(--bone);
+  transition: transform 0.28s cubic-bezier(.2,.7,.2,1), opacity 0.2s ease;
+  transform-origin: center;
+}
+.nav-toggle.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+@media (max-width: 768px) {
+  /* Show hamburger, keep topnav above overlay */
+  .topnav { z-index: 200; }
+  .nav-toggle { display: flex; }
+
+  /* Full-screen slide-in nav overlay */
+  .navlinks {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 8, 6, 0.97);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 44px;
+    transform: translateX(100%);
+    transition: transform 0.42s cubic-bezier(.2,.7,.2,1);
+    pointer-events: none;
+    z-index: 150;
+    margin: 0;
+    padding: 0;
+  }
+  .navlinks.open {
+    transform: none;
+    pointer-events: auto;
+  }
+  .navlinks a {
+    font-size: 14px;
+    letter-spacing: 0.28em;
+    opacity: 1;
+  }
+  .navlinks .num { font-size: 10px; }
+  .navlinks .cta { color: var(--accent); }
+}
+
+/* ----- Hero mobile ----- */
+@media (max-width: 640px) {
+  /* Use small viewport height so bottom bar doesn't cut content */
+  .hero { min-height: 100svh; }
+
+  .hero-grid { padding: 76px var(--gutter) 48px; }
+
+  /* Hide decorative coordinate text — too long for narrow column */
+  .hero-meta-tr { display: none; }
+  .hero-meta-bl { display: none; }
+
+  /* Hide the floating hanko on small screens */
+  .hanko-hero { display: none; }
+
+  /* Shrink & fade the side kanji so it doesn't overlap the title */
+  .hero-kanji {
+    font-size: 12vw;
+    opacity: 0.5;
+  }
+
+  /* Allow kicker text to wrap on small screens */
+  .hero-meta .kicker {
+    white-space: normal;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    line-height: 1.5;
+  }
+
+  /* Tagline sizing */
+  .tag-en { font-size: clamp(17px, 4.5vw, 26px); }
+}
+
+/* ----- Portfolio filter chips on small screens ----- */
+@media (max-width: 480px) {
+  .chip { padding: 7px 11px; font-size: 10px; }
+}
+
+/* ----- Philosophy kanji — prevent over-scale on mobile ----- */
+@media (max-width: 480px) {
+  .phi-kanji { font-size: 58vw; margin-left: 0; }
+}
+
+/* ----- Process timeline on very small screens ----- */
+@media (max-width: 480px) {
+  .step { grid-template-columns: 56px 1px 1fr; gap: 12px; }
+  .step-kanji { font-size: 30px; }
+  .step-body h3 { font-size: clamp(20px, 5vw, 28px); }
+  .step-desc { font-size: 15px; }
+}
+
+/* ----- Booking CTA — full width on mobile ----- */
+@media (max-width: 640px) {
+  .book-cta {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+}
+
+/* ----- Lightbox — wider and better positioned on mobile ----- */
+@media (max-width: 640px) {
+  .lb-content {
+    width: min(92vw, 920px);
+    max-height: 72vh;
+  }
+  .lb-close { top: 16px; right: 16px; width: 40px; height: 40px; font-size: 22px; }
+  .lb-prev { left: 6px; width: 44px; height: 44px; font-size: 28px; }
+  .lb-next { right: 6px; width: 44px; height: 44px; font-size: 28px; }
+  .lb-meta { bottom: 14px; font-size: 9px; gap: 12px; flex-wrap: wrap; justify-content: center; }
+}
+
+/* ----- Section markers — tighter on mobile ----- */
+@media (max-width: 480px) {
+  .section-marker { gap: 12px; margin-bottom: clamp(28px, 5vh, 60px); }
+  .section-marker .num { font-size: 18px; }
+  .section-marker .kicker { font-size: 9px; letter-spacing: 0.14em; }
+}
+
+/* ----- Footer row — stack on mobile ----- */
+@media (max-width: 480px) {
+  .footer-row { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .foot-meta { align-items: flex-start; text-align: left; }
+}
+
+/* ----- Prevent horizontal overflow from kicker nowrap ----- */
+@media (max-width: 640px) {
+  .kicker { white-space: normal; }
+  /* But keep filter chips and nav labels on one line */
+  .chip,
+  .navlinks .kicker,
+  .card-meta .cm-name,
+  .card-meta .cm-num { white-space: nowrap; }
+}
+
+/* ----- Touch target sizing ----- */
+@media (pointer: coarse) {
+  .chip { min-height: 44px; display: inline-flex; align-items: center; }
+  .lb-close,
+  .lb-prev,
+  .lb-next { min-width: 44px; min-height: 44px; }
+}

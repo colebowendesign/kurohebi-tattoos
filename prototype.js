@@ -48,6 +48,26 @@
   const tp = params.get('typepair');
   if (tp) applyTypePair(tp);
 
+  // ----- Hamburger nav -----
+  const navToggle = document.querySelector('.nav-toggle');
+  const navMenu = document.querySelector('.navlinks');
+  if (navToggle && navMenu) {
+    const closeNav = () => {
+      navToggle.classList.remove('open');
+      navMenu.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    };
+    navToggle.addEventListener('click', () => {
+      const isOpen = navToggle.classList.toggle('open');
+      navMenu.classList.toggle('open', isOpen);
+      navToggle.setAttribute('aria-expanded', String(isOpen));
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+    navMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
+    document.querySelector('.brand').addEventListener('click', closeNav);
+  }
+
   // ----- Portfolio data -----
   // Each item: id, name (mono), category, hours, kanji label, art (svg fn), redMark, height bias
   const PIECES = [
@@ -281,6 +301,20 @@
     if (e.key === 'ArrowRight') document.getElementById('lbNext').click();
   });
   lb.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
+
+  // Touch swipe to navigate lightbox on mobile
+  let lbTouchX = null;
+  lb.addEventListener('touchstart', (e) => { lbTouchX = e.touches[0].clientX; }, { passive: true });
+  lb.addEventListener('touchend', (e) => {
+    if (lbTouchX === null) return;
+    const dx = e.changedTouches[0].clientX - lbTouchX;
+    lbTouchX = null;
+    if (Math.abs(dx) < 40) return;
+    lbIdx = dx < 0
+      ? (lbIdx + 1) % PIECES.length
+      : (lbIdx - 1 + PIECES.length) % PIECES.length;
+    renderLb();
+  }, { passive: true });
 
   // ----- Scroll fade — add variants to elements before observing -----
   document.querySelectorAll('.section-marker').forEach(el => {
